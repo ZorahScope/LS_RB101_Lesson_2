@@ -2,21 +2,40 @@ def prompt(message)
   Kernel.puts("=> #{message}")
 end
 
-def valid_number?(num)
-  num.to_i != 0
+def integer?(num)
+  num.to_i.to_s == num
+end
+
+def float?(num)
+  num.to_f.to_s == num
+end
+
+def number?(input)
+  integer?(input) || float?(input)
+end
+
+def convert_to_int_or_float(num)
+  if float?(num)
+    num.to_f
+  else
+    num.to_i
+  end
 end
 
 def operation_to_message(op)
-  case op
-  when "1"
-    "Adding"
-  when "2"
-    "Subtracting"
-  when "3"
-    "Multiplying"
-  when "4"
-    "Dividing"
-  end
+  operation =
+    case op
+    when "1"
+      "Adding"
+    when "2"
+      "Subtracting"
+    when "3"
+      "Multiplying"
+    when "4"
+      "Dividing"
+    end
+
+    operation
 end
 
 print("Welcome to the Calculator! Enter your name: ")
@@ -41,7 +60,7 @@ loop do
     prompt("What's the first number?: ")
     number1 = Kernel.gets.chomp
 
-    if valid_number?(number1)
+    if number?(number1)
       break
     else
       prompt("Error: Invalid number")
@@ -53,7 +72,7 @@ loop do
     prompt("What's the second number?: ")
     number2 = Kernel.gets.chomp
 
-    if valid_number?(number2)
+    if number?(number2)
       break
     else
       prompt("Error: Invalid number")
@@ -86,17 +105,20 @@ loop do
 
   prompt("#{operation_to_message(operator)} the two numbers...")
 
+  number1 = convert_to_int_or_float(number1)
+  number2 = convert_to_int_or_float(number2)
+
   # perform the operation on the two numbers
   result =
     case operator
     when "1"
-      number1.to_i + number2.to_i
+      number1 + number2
     when "2"
-      number1.to_i - number2.to_i
+      number1 - number2
     when "3"
-      number1.to_i * number2.to_i
+      number1 * number2
     when "4"
-      number1.to_i / number2.to_f
+      number1 / number2.to_f
     else
       "invalid, due to incorrect operation"
     end
