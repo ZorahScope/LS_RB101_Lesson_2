@@ -35,7 +35,7 @@ def operation_to_message(op)
       "Dividing"
     end
 
-    operation
+  operation
 end
 
 print("Welcome to the Calculator! Enter your name: ")
