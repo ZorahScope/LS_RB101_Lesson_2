@@ -1,3 +1,6 @@
+require "yaml"
+MESSAGES = YAML.load_file("calculator_messages.yml")
+
 def prompt(message)
   Kernel.puts("=> #{message}")
 end
@@ -15,11 +18,7 @@ def number?(input)
 end
 
 def convert_to_int_or_float(num)
-  if float?(num)
-    num.to_f
-  else
-    num.to_i
-  end
+  float?(num) ? num.to_f : num.to_i
 end
 
 def operation_to_message(op)
@@ -38,14 +37,14 @@ def operation_to_message(op)
   operation
 end
 
-print("Welcome to the Calculator! Enter your name: ")
+print(MESSAGES["welcome"])
 
 name = ""
 loop do
   name = Kernel.gets.chomp
 
   if name.empty?
-    prompt("Make sure to use a valid name.")
+    prompt(MESSAGES["valid_name"])
   else
     break
   end
@@ -63,7 +62,7 @@ loop do
     if number?(number1)
       break
     else
-      prompt("Error: Invalid number")
+      prompt(MESSAGES["invalid_number"])
     end
   end
 
@@ -99,7 +98,7 @@ loop do
     if %w[1 2 3 4].include?(operator)
       break
     else
-      prompt("Error: Invalid operator!! , Must choose 1, 2, 3, 4")
+      prompt(MESSAGES["invalid_operator"])
     end
   end
 
@@ -119,16 +118,14 @@ loop do
       number1 * number2
     when "4"
       number1 / number2.to_f
-    else
-      "invalid, due to incorrect operation"
     end
 
   # output the result
   prompt("The result is #{result}")
 
-  prompt("Do you want to perform another calculation? (Y to run again)")
+  prompt(MESSAGES['another_calculation?'])
   answer = Kernel.gets.chomp
   break unless answer.downcase.start_with?("y")
 end
 
-prompt("Thank you for using the calculator, good-bye!")
+prompt(MESSAGES['good_bye'])
