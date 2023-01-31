@@ -19,64 +19,75 @@ end
 
 # Receive Inputs
 prompt("Welcome to the loan calculator")
-puts("-" * 40)
-
-prompt("Please enter your loan ammount: ")
-loan_amount = ""
 loop do
-  loan_amount = gets.chomp.to_i
+  puts("-" * 40)
 
-  if loan_amount.to_s.empty? || loan_amount.to_f <= 0
-    prompt("Must enter a postivie Integer")
-  else
-    break
+  prompt("Please enter your loan ammount: ")
+  loan_amount = ""
+  loop do
+    loan_amount = gets.chomp.to_i
+
+    if loan_amount.to_s.empty? || loan_amount.to_f <= 0
+      prompt("Must enter a postivie Integer")
+    else
+      break
+    end
   end
-end
 
-prompt("Please enter your APR: ")
-prompt("(Example: 5 for 5% or 2.5 for 2.5%)")
-apr = ""
-loop do
-  apr = gets.chomp.to_f
+  prompt("Please enter your APR: ")
+  prompt("(Example: 5 for 5% or 2.5 for 2.5%)")
+  apr = ""
+  loop do
+    apr = gets.chomp.to_f
 
-  if apr.to_s.empty? || apr.to_f <= 0
-    prompt("Must enter a postivie Integer")
-  else
-    break
+    if apr.to_s.empty? || apr.to_f <= 0
+      prompt("Must enter a postivie Integer")
+    else
+      break
+    end
   end
-end
 
-prompt("Please enter your loan duration in years: ")
-loan_duration_years = ""
-loop do
-  loan_duration_years = gets.chomp.to_i
+  prompt("Please enter your loan duration in years: ")
+  loan_duration_years = ""
+  loop do
+    loan_duration_years = gets.chomp.to_i
 
-  if loan_duration_years.to_s.empty? || loan_duration_years.to_f <= 0
-    prompt("Must enter a postivie Integer")
-  else
-    break
+    if loan_duration_years.to_s.empty? || loan_duration_years.to_f <= 0
+      prompt("Must enter a postivie Integer")
+    else
+      break
+    end
   end
-end
 
-# Calculate Outputs
-prompt("Calculating...\n")
-sleep 1
+  # Calculate Outputs
+  prompt("Calculating...\n")
+  sleep 1
 
-puts(("-" * 20) + " Results " + ("-" * 20))
+  puts(("-" * 20) + " Results " + ("-" * 20))
 
-monthly_interest = calculate_monthly_interest(apr)
+  monthly_interest = calculate_monthly_interest(apr)
 
-loan_duration_months = calculate_loan_duration_months(loan_duration_years)
+  loan_duration_months = calculate_loan_duration_months(loan_duration_years)
 
-monthly_payment =
-  calculate_monthly_payment(loan_amount, monthly_interest, loan_duration_months)
+  monthly_payment =
+    calculate_monthly_payment(
+      loan_amount,
+      monthly_interest,
+      loan_duration_months
+    )
 
-total_of_monthly_payments = monthly_payment * loan_duration_months
+  total_of_monthly_payments = monthly_payment * loan_duration_months
 
-results = <<-MSG
+  results = <<-MSG
   Payment Every Month: #{monthly_payment}
   Total of #{loan_duration_months} Payments: #{total_of_monthly_payments}
   Monthly Interest Rate: #{(monthly_interest * 100.to_f)}%
 MSG
 
-puts(results)
+  puts(results)
+  puts(("-" * 49) + "\n\n")
+
+  prompt("Do you want to perform another calculation? (Y to run again)")
+  answer = Kernel.gets.chomp
+  break unless answer.downcase.start_with?("y")
+end
