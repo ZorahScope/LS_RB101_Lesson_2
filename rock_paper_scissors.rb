@@ -1,9 +1,5 @@
 VALID_CHOICES = %w[rock paper scissors]
 
-def test_method
-  prompt("test message")
-end
-
 def prompt(message)
   puts("=> #{message}")
 end
@@ -26,10 +22,20 @@ def display_results(player, computer)
   end
 end
 
+def update_score!(scoreboard, player, computer)
+  if win?(player, computer)
+    scoreboard[:player] += 1
+  elsif win?(computer, player)
+    scoreboard[:computer] += 1
+  end
+end
+
+scoreboard = { player: 0, computer: 0 }
+
 loop do
   choice = ""
   loop do
-    prompt("Choose one: #{VALID_CHOICES.join(', ')} ")
+    prompt("Choose one: #{VALID_CHOICES.join(", ")} ")
     choice = gets.chomp
 
     if VALID_CHOICES.include?(choice)
@@ -43,9 +49,17 @@ loop do
 
   display_results(choice, computer_choice)
 
-  prompt("Do you want to play again?")
-  answer = gets.chomp
-  break unless answer.downcase.start_with?("y")
+  update_score!(scoreboard, choice, computer_choice)
+
+  if scoreboard.value?(3)
+    winner = scoreboard.rassoc(3)
+    prompt("#{winner[0].capitalize} is the grand total winner")
+    break
+    # else
+    # prompt("Do you want to play again?")
+    # answer = gets.chomp
+    # break unless answer.downcase.start_with?("y")
+  end
 end
 
-prompt("Thank yourfor playing. Good bye!")
+prompt("Thank you for playing. Good bye!")
