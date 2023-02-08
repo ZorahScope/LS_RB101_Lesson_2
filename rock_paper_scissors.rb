@@ -30,15 +30,35 @@ def update_score!(scoreboard, player, computer)
   end
 end
 
+def shorthand_valid?(choice)
+  shorthand_error = <<-MSG
+Shorthand not specific enough, more than 1 choice starts with '#{choice}'
+  MSG
+
+  result = VALID_CHOICES.select { |c| c.start_with?(choice) }
+  if result.size > 1
+    prompt(shorthand_error)
+    false
+  else
+    true
+  end
+end
+
+def convert_shorthand(choice)
+  proper_choice = VALID_CHOICES.select { |c| c.start_with?(choice) }
+  proper_choice.pop
+end
+
 scoreboard = { player: 0, computer: 0 }
 
 loop do
   choice = ""
   loop do
-    prompt("Choose one: #{VALID_CHOICES.join(", ")} ")
+    prompt("Choose one: #{VALID_CHOICES.join(', ')} ")
     choice = gets.chomp
 
-    if VALID_CHOICES.include?(choice)
+    if shorthand_valid?(choice)
+      choice = convert_shorthand(choice)
       break
     else
       prompt("That's not a valid choice")
