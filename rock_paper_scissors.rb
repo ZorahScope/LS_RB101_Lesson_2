@@ -1,13 +1,19 @@
-VALID_CHOICES = %w[rock paper scissors]
+VALID_CHOICES = %w[rock paper scissors spock lizard]
+
+WINNING_CONDITIONS = {
+  rock: %w(lizard scissors),
+  lizard: %w(spock paper),
+  spock: %w(scissors rock),
+  scissors: %w(paper lizard),
+  paper: %w(rock spock)
+}
 
 def prompt(message)
   puts("=> #{message}")
 end
 
 def win?(first, second)
-  (first == "rock" && second == "scissors") ||
-    (first == "paper" && second == "rock") ||
-    (first == "scissors" && second == "paper")
+  WINNING_CONDITIONS[first.to_sym].include?(second)
 end
 
 def display_results(player, computer)
@@ -32,13 +38,16 @@ end
 
 def shorthand_valid?(choice)
   shorthand_error = <<-MSG
-Shorthand not specific enough, more than 1 choice starts with '#{choice}'
+Shorthand not specific enough, more than 1 choice starts with '#{choice}',
+Try adding a second letter.
   MSG
 
   result = VALID_CHOICES.select { |c| c.start_with?(choice) }
   if result.size > 1
     prompt(shorthand_error)
     false
+  elsif result.size == 0
+    false # Empty array is returned if there's no matches from Array#select, [].size == 0
   else
     true
   end
@@ -75,10 +84,6 @@ loop do
     winner = scoreboard.rassoc(3)
     prompt("#{winner[0].capitalize} is the grand total winner")
     break
-    # else
-    # prompt("Do you want to play again?")
-    # answer = gets.chomp
-    # break unless answer.downcase.start_with?("y")
   end
 end
 
