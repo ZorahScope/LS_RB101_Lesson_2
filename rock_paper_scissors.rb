@@ -80,6 +80,13 @@ end
 
 scoreboard = { player: 0, computer: 0 }
 
+introduction = <<-MSG 
+Welcome to Rock, Paper, Scissors, Spock, Lizard
+First to score 3 is the grand winner\n
+MSG
+
+puts(introduction)
+
 loop do
   choice = prompt_user_choice
   computer_choice = VALID_CHOICES.sample
