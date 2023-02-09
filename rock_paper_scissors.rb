@@ -46,10 +46,8 @@ Try adding a second letter.
   if result.size > 1
     prompt(shorthand_error)
     false
-  elsif result.size == 0
-    false # Empty array is returned if there's no matches from Array#select, [].size == 0
   else
-    true
+    !(result.size == 0) # returns if Array#select has no matches
   end
 end
 
