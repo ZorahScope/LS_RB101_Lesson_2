@@ -16,7 +16,7 @@ def win?(first, second)
   WINNING_CONDITIONS[first.to_sym].include?(second)
 end
 
-def display_results(player, computer)
+def display_results(scoreboard, player, computer)
   puts("You chose: #{player}; Computer chose: #{computer}\n\n")
 
   if win?(player, computer)
@@ -26,6 +26,12 @@ def display_results(player, computer)
   else
     prompt("It's a tie")
   end
+  current_score = <<-MSG
+\nCurrent Score: 
+Player - #{scoreboard[:player]}
+Computer - #{scoreboard[:computer]}\n
+MSG
+  print(current_score)
 end
 
 def update_score!(scoreboard, player, computer)
@@ -56,13 +62,11 @@ def convert_shorthand(choice)
   proper_choice.pop
 end
 
-scoreboard = { player: 0, computer: 0 }
-
-loop do
+def prompt_user_choice
   choice = ""
   loop do
     prompt("Choose one: #{VALID_CHOICES.join(', ')} ")
-    choice = gets.chomp
+    choice = gets.chomp.downcase
 
     if shorthand_valid?(choice)
       choice = convert_shorthand(choice)
@@ -71,12 +75,17 @@ loop do
       prompt("That's not a valid choice")
     end
   end
+  choice
+end
 
+scoreboard = { player: 0, computer: 0 }
+
+loop do
+  choice = prompt_user_choice
   computer_choice = VALID_CHOICES.sample
 
-  display_results(choice, computer_choice)
-
   update_score!(scoreboard, choice, computer_choice)
+  display_results(scoreboard, choice, computer_choice)
 
   if scoreboard.value?(3)
     winner = scoreboard.rassoc(3)
