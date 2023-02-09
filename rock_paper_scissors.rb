@@ -1,3 +1,5 @@
+require 'io/console'
+
 VALID_CHOICES = %w[rock paper scissors spock lizard]
 
 WINNING_CONDITIONS = {
@@ -66,7 +68,7 @@ def prompt_user_choice
   choice = ""
   loop do
     prompt("Choose one: #{VALID_CHOICES.join(', ')} ")
-    choice = gets.chomp.downcase
+    choice = gets.chomp.strip.downcase
 
     if shorthand_valid?(choice)
       choice = convert_shorthand(choice)
@@ -99,6 +101,10 @@ loop do
     prompt("#{winner[0].capitalize} is the grand total winner")
     break
   end
+
+  sleep 2
+  $stdout.clear_screen
+
 end
 
 prompt("Thank you for playing. Good bye!")
