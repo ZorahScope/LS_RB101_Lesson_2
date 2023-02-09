@@ -55,7 +55,7 @@ Try adding a second letter.
     prompt(shorthand_error)
     false
   else
-    !(result.size == 0) # returns if Array#select has no matches
+    !(result.size == 0) # returns false if Array#select has no matches
   end
 end
 
@@ -82,7 +82,7 @@ end
 
 scoreboard = { player: 0, computer: 0 }
 
-introduction = <<-MSG 
+introduction = <<-MSG
 Welcome to Rock, Paper, Scissors, Spock, Lizard
 First to score 3 is the grand winner\n
 MSG
@@ -104,7 +104,6 @@ loop do
 
   sleep 2
   $stdout.clear_screen
-
 end
 
 prompt("Thank you for playing. Good bye!")
