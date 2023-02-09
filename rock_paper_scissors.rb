@@ -55,7 +55,7 @@ Try adding a second letter.
     prompt(shorthand_error)
     false
   else
-    !(result.size == 0) # returns if Array#select has no matches
+    !(result.size == 0) # returns false if Array#select has no matches
   end
 end
 
